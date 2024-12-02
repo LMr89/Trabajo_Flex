@@ -17,6 +17,13 @@ public class CommandLineRunner {
         sb = new StringBuilder();
     }
     
+    /**
+     * Este metodo es el encargado de ejecutar cualquier comando por consola y mediante la interfaz enviar la salida que el comando da.
+     * @param command Comando a ejecutar
+     * @param transfer Interfaz que trasnfiere los datos de salida
+     * @throws IOException Excepcion en caso de error
+     * @throws InterruptedException  Excepcion en caso de error
+     */
     public static void runCommand(String command, OnTransferData transfer) throws IOException, InterruptedException {
 
         ProcessBuilder proc = new ProcessBuilder(command.split("\\s"));

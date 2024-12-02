@@ -9,18 +9,25 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Clase constroladora del patron MVC el cual se encarga de manejar los clicks de los componentes de la interfaz
  * @author LuisQMHz
  */
 public class MainController implements ActionListener{
 
     MainForm mainFrame;
 
+    /**
+     * Constructor de la clase
+     * @param mainFrame  Objeto del formulario principal
+     */
     public MainController(MainForm mainFrame) {
         this.mainFrame = mainFrame;
         initiComponentes();
     }
 
+    /**
+     * Metodo que inicia la condifuracion para la interfaz
+     */
     void initiComponentes() {
 
         mainFrame.setTitle("CODIFICADOR");
@@ -33,10 +40,18 @@ public class MainController implements ActionListener{
         mainFrame.getBtnCodificar().addActionListener(this);
     }
 
+    /**
+     * Inicializador de la interfaz
+     */
     void initWindow() {
         this.mainFrame.setVisible(true);
     }
     
+    /**
+     * Metodo encargado de verificar si el texto de entrada corresponde a un codigo morse
+     * @param data Data de entrada 
+     * @return  true si lo es de lo contrario false
+     */
     boolean verificarSiEsMorse(String data){
         Pattern pate = Pattern.compile("[\\.]+[\\s\\/\\s]+");
         
@@ -46,28 +61,33 @@ public class MainController implements ActionListener{
     }
     
     
-    
+    /**
+     * Encargado de manejar el click del boton en la interfaz
+     * @param e Evento click
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
-      
+        //Se obtiene el texto ingresado
         String data = mainFrame.getTxtClearText().getText();
+        
+        //Se verifica que lo ingresado no este vacio si lo esta imprime un mensaje de error
         if (data.isEmpty()) {
             JOptionPane.showMessageDialog(null, "No ha ingresado un texto a codificar", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        //Verificar si el texto ingresado no este ya codificado pese a seleccionar la opcion de codificacion
-        
+        //Verificar si el texto ingresado no este ya codificado pese a seleccionar la opcion de codificacion       
         if (verificarSiEsMorse(data) && mainFrame.getRdCodificar().isSelected()) {
             JOptionPane.showMessageDialog(null, "El texto al parecer ya se encuentra codificado, operacion cancelada", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
        
-        //Continua el flujo con normalidad
+        //Continua el flujo con normalidad, aqui segun el radio buton seleccionado se envia el tipo de orden si es codificar o decodificar y se escoge el programa
         String commando = String.format("%s %s ",
                 mainFrame.getRdCodificar().isSelected() ? "Codigo_flex\\codificador.exe"
                 : "Codigo_flex\\decodificador.exe", data);
 
+        //Pieza de codigo en el cual se ejecutara el comando
         try {
             System.out.println(commando);
             CommandLineRunner
@@ -84,6 +104,10 @@ public class MainController implements ActionListener{
         
     }
     
+    /**
+     * Metodo encargado de imprimir caracteres en el componente principal de la intefaz
+     * @param data 
+     */
     void imprimirData(String data){
         mainFrame.getTxtOut().append(data+"\n");
     }
